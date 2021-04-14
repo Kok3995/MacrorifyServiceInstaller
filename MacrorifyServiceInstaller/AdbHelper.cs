@@ -60,7 +60,8 @@ namespace MacrorifyServiceInstaller
             if (IsServiceRunning(device))
                 return true;
 
-            RunCommand(@"""" + Helper.GetAdbExePath(deviceType) + @"""" + @" -s " + device.Serial + @" shell ""/data/local/tmp/minitouch &""");
+            RunCommand(@"""" + Helper.GetAdbExePath(deviceType) + @"""" + @" -s " + device.Serial + @" shell chmod 777 ""/data/local/tmp/minitouch"" &&" + 
+                @"""" + Helper.GetAdbExePath(deviceType) + @"""" + @" -s " + device.Serial + @" shell ""/data/local/tmp/minitouch""");
 
             //Wait for the executable to run
             Thread.Sleep(1000);
