@@ -12,7 +12,7 @@ namespace MacrorifyServiceInstaller
 
             var type = ConnectDevices();
 
-            var devices = AdbHelper.GetClient().GetDevices();
+            var devices = AdbHelper.GetClient().GetDevices().Where(d => d.State == DeviceState.Online).ToList();
 
             DeviceData[] selectedDevices;
 
