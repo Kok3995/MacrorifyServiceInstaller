@@ -21,6 +21,7 @@ namespace MacrorifyServiceInstaller
                 case DeviceType.Real:
                 case DeviceType.MEmu: return Path.Combine(Environment.CurrentDirectory, "adb", "adb.exe");
                 case DeviceType.Nox: return Path.Combine(Environment.CurrentDirectory, "adb", "nox", "adb.exe");
+                case DeviceType.LDPlayer: return Path.Combine(Environment.CurrentDirectory, "adb", "ldplayer", "adb.exe");
                 default:
                     throw new NotImplementedException();
             }

@@ -8,6 +8,7 @@ namespace MacrorifyServiceInstaller
     {
         Real = 1,
         Nox = 2,
-        MEmu = 3
+        MEmu = 3,
+        LDPlayer = 4
     }
 }
