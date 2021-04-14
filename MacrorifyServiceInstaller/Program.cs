@@ -14,7 +14,7 @@ namespace MacrorifyServiceInstaller
 
             var devices = AdbHelper.GetClient().GetDevices();
 
-            DeviceData device;
+            DeviceData[] selectedDevices;
 
             if (devices.Count == 0)
             {
@@ -24,10 +24,12 @@ namespace MacrorifyServiceInstaller
             }
 
             if (devices.Count == 1)
-                device = devices[0];
+                selectedDevices = new DeviceData[] { devices[0] };
             else
             {
                 Console.WriteLine("Multiple Connected Devices (" + devices.Count + ")");
+
+                Console.WriteLine("0. All");
 
                 for (int i = 0; i < devices.Count; i++)
                 {
@@ -35,11 +37,17 @@ namespace MacrorifyServiceInstaller
                     Console.WriteLine((i + 1) + ". " + d.Name);
                 }
 
-                int selected = Helper.GetUserInputInt("Please select the device to install: ", 1, devices.Count);
-                device = devices[selected - 1];
+                int selected = Helper.GetUserInputInt("Please select the device to install: ", 0, devices.Count);
+                if (selected == 0)
+                    selectedDevices = devices.ToArray();
+                else
+                    selectedDevices = new DeviceData[] { devices[selected - 1] };
             }
 
-            Install(device, type);
+            foreach (var device in selectedDevices)
+                Install(device, type);
+
+            Pause();
         }
 
         public static DeviceType ConnectDevices()
@@ -57,10 +65,9 @@ namespace MacrorifyServiceInstaller
             switch (selected)
             {
                 case DeviceType.Real:
-                    connector = new ConnecterRealDevice();
-                    break;
                 case DeviceType.Nox:
-                    connector = new ConnecterNox();
+                case DeviceType.LDPlayer:
+                    connector = new ConnecterNone();
                     break;
                 case DeviceType.MEmu:
                     connector = new ConnecterMEmu();
@@ -84,10 +91,8 @@ namespace MacrorifyServiceInstaller
 
             //run
             if (AdbHelper.RunService(device, deviceType))
-                Console.WriteLine("Success");
-            else Console.WriteLine("Fail");
-
-            Pause();
+                Console.WriteLine(device.Name + " - Success");
+            else Console.WriteLine(device.Name + " - Fail");
         }
 
         public static void Pause()
