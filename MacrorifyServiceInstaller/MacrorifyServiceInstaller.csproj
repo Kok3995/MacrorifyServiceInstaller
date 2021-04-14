@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,6 +10,9 @@
     <None Remove="adb\adb.exe" />
     <None Remove="adb\AdbWinApi.dll" />
     <None Remove="adb\AdbWinUsbApi.dll" />
+    <None Remove="adb\ldplayer\adb.exe" />
+    <None Remove="adb\ldplayer\AdbWinApi.dll" />
+    <None Remove="adb\ldplayer\AdbWinUsbApi.dll" />
     <None Remove="adb\nox\adb.exe" />
     <None Remove="adb\nox\AdbWinApi.dll" />
     <None Remove="adb\nox\AdbWinUsbApi.dll" />
@@ -20,35 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="adb\adb.exe">
+    <Content Include="adb\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Include="adb\AdbWinApi.dll">
+    <Content Include="Service\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="adb\AdbWinUsbApi.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="adb\nox\AdbWinApi.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="adb\nox\AdbWinUsbApi.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="adb\nox\adb.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Service\arm64-v8a\minitouch">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Service\armeabi-v7a\minitouch">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Service\x86\minitouch">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Service\x86_64\minitouch">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
 

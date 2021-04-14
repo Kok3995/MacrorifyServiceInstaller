@@ -5,15 +5,15 @@ using System.Text;
 
 namespace MacrorifyServiceInstaller
 {
-    public class ConnecterNox : IConnector
+    public class ConnecterNone : IConnector
     {
-        public ConnecterNox()
+        public ConnecterNone()
         {
         }
 
         public void Connect()
         {
-            /* Nothing Nox Auto Connect */
+            /* No need to do anything */
         }
     }
 }
