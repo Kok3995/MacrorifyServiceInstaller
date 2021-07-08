@@ -9,6 +9,8 @@ namespace MacrorifyServiceInstaller
         public static readonly string LOCALHOST = "localhost";
         public static readonly string SERVICE_DEVICE_PATH = "/data/local/tmp/minitouch";
         public static readonly int MEMU_PORT = 21503;
+        public static readonly int BLUE_PORT = 5555;
+        public static readonly int MUMU_PORT = 7555;
         public static readonly int NOX_PORT = 62001;
     }
 }

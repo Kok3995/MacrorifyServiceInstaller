@@ -10,7 +10,17 @@ namespace MacrorifyServiceInstaller
         {
             Helper.CenterText("Macrorify Native Service Installer");
 
-            var type = ConnectDevices();
+            DeviceType type = DeviceType.Real;
+
+            try
+            {
+                type = ConnectDevices();
+            }
+            catch
+            {
+                Pause();
+                return;
+            }
 
             var devices = AdbHelper.GetClient().GetDevices().Where(d => d.State == DeviceState.Online).ToList();
 
@@ -27,17 +37,17 @@ namespace MacrorifyServiceInstaller
                 selectedDevices = new DeviceData[] { devices[0] };
             else
             {
-                Console.WriteLine("Multiple Connected Devices (" + devices.Count + ")");
+                Console.WriteLine("\nMultiple Connected Devices (" + devices.Count + ")");
 
                 Console.WriteLine("0. All");
 
                 for (int i = 0; i < devices.Count; i++)
                 {
                     var d = devices[i];
-                    Console.WriteLine((i + 1) + ". " + d.Name);
+                    Console.WriteLine((i + 1) + ". " + GetDeviceDisplayName(d));
                 }
 
-                int selected = Helper.GetUserInputInt("Please select the device to install: ", 0, devices.Count);
+                int selected = Helper.GetUserInputInt("\nPlease select the device to install: ", 0, devices.Count);
                 if (selected == 0)
                     selectedDevices = devices.ToArray();
                 else
@@ -45,7 +55,18 @@ namespace MacrorifyServiceInstaller
             }
 
             foreach (var device in selectedDevices)
-                Install(device, type);
+            {
+                try
+                {
+
+                    Console.WriteLine(GetDeviceDisplayName(device) + " - Installing");
+                    Install(device, type);
+                } 
+                catch
+                {
+                    Console.WriteLine(GetDeviceDisplayName(device) + " - Error");
+                };
+            }
 
             Pause();
         }
@@ -59,7 +80,7 @@ namespace MacrorifyServiceInstaller
                 Console.WriteLine((int)d + ". " + d.ToString());
             }
 
-            DeviceType selected = (DeviceType)Helper.GetUserInputInt("Please select your device type: ", (int)supportedDevice.First(), (int)supportedDevice.Last());
+            DeviceType selected = (DeviceType)Helper.GetUserInputInt("\nPlease select your device type: ", (int)supportedDevice.First(), (int)supportedDevice.Last());
 
             IConnector connector;
             switch (selected)
@@ -72,17 +93,39 @@ namespace MacrorifyServiceInstaller
                 case DeviceType.MEmu:
                     connector = new ConnecterMEmu();
                     break;
+                case DeviceType.BlueStack:
+                    connector = new ConnecterBlue();
+                    break;
+                case DeviceType.MuMu:
+                    connector = new ConnecterMumu();
+                    break;
                 default:
                     throw new NotImplementedException("Unsupported Device Type");
             }
 
             AdbHelper.StartServer(selected);
-            connector.Connect();
+
+            try
+            {
+                connector.Connect();
+            }
+            catch
+            {
+                Console.WriteLine($"Error when trying to connect to {selected}");
+                throw new Exception();
+            }
+
             return selected;
         }
 
         public static void Install(DeviceData device, DeviceType deviceType)
         {
+            if (device.State == DeviceState.Offline)
+            {
+                Console.WriteLine(GetDeviceDisplayName(device) + " - Device is Offline");
+                return;
+            }
+    
             var abi = AdbHelper.GetArchitecture(device);
             var source = Helper.GetServicePath(abi);
 
@@ -91,14 +134,25 @@ namespace MacrorifyServiceInstaller
 
             //run
             if (AdbHelper.RunService(device, deviceType))
-                Console.WriteLine(device.Name + " - Success");
-            else Console.WriteLine(device.Name + " - Fail");
+                Console.WriteLine(GetDeviceDisplayName(device) + " - Success");
+            else
+            {
+                Console.WriteLine(GetDeviceDisplayName(device) + " - Fail");
+
+                if (deviceType == DeviceType.LDPlayer || deviceType == DeviceType.BlueStack)
+                    Console.WriteLine("BlueStack or LDPlayer need to enable ADB in their Setting. Check the tutorial");
+            }
         }
 
         public static void Pause()
         {
             Console.Write("Press any key to continue... ");
             Console.ReadKey(true);
+        }
+
+        private static string GetDeviceDisplayName(DeviceData device)
+        {
+            return $"{device.Model} ({device.Name}) Serial: {device.Serial} Status: {device.State}";
         }
     }
 }

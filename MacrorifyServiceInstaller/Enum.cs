@@ -9,6 +9,8 @@ namespace MacrorifyServiceInstaller
         Real = 1,
         Nox = 2,
         MEmu = 3,
-        LDPlayer = 4
+        LDPlayer = 4,
+        BlueStack = 5,
+        MuMu = 6
     }
 }
