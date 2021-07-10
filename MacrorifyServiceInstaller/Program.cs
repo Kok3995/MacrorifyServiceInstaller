@@ -103,6 +103,7 @@ namespace MacrorifyServiceInstaller
                     throw new NotImplementedException("Unsupported Device Type");
             }
 
+            Console.WriteLine("Start Adb Server");
             AdbHelper.StartServer(selected);
 
             try
@@ -127,12 +128,16 @@ namespace MacrorifyServiceInstaller
             }
     
             var abi = AdbHelper.GetArchitecture(device);
+            Console.WriteLine(GetDeviceDisplayName(device) + " - Device Architecture: " + abi);
+
             var source = Helper.GetServicePath(abi);
 
             //push service to device
+            Console.WriteLine(GetDeviceDisplayName(device) + " - Push Service to Device");
             AdbHelper.Push(device, source, Constant.SERVICE_DEVICE_PATH, 777);
 
             //run
+            Console.WriteLine(GetDeviceDisplayName(device) + " - Run Service");
             if (AdbHelper.RunService(device, deviceType))
                 Console.WriteLine(GetDeviceDisplayName(device) + " - Success");
             else
