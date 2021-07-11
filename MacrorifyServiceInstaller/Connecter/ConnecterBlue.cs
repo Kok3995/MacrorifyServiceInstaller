@@ -13,7 +13,13 @@ namespace MacrorifyServiceInstaller
 
         public void Connect()
         {
-            AdbHelper.GetClient().Connect(new System.Net.DnsEndPoint(Constant.LOCALHOST, Constant.BLUE_PORT));
+            for (var i = 0; i <= 100; i += 10)
+            {
+                try
+                {
+                    AdbHelper.GetClient().Connect(new System.Net.DnsEndPoint(Constant.LOCALHOST, Constant.BLUE_PORT + i));
+                } catch { /*ignored*/ }
+            }
         }
     }
 }
