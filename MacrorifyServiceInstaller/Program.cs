@@ -6,8 +6,18 @@ namespace MacrorifyServiceInstaller
 {
     class Program
     {
-        static void Main(string[] args)
+        static bool isDebug;
+
+        static void Main()
         {
+            string[] args = Environment.GetCommandLineArgs().Skip(1).ToArray();
+            Func<string, string> lookupFunc =
+                option => args.Where(s => s.StartsWith(option)).Select(s => s.Substring(option.Length)).FirstOrDefault();
+
+            string debugOption = lookupFunc("debug=");
+
+            isDebug = debugOption == "1";
+
             Helper.CenterText("Macrorify Native Service Installer");
 
             DeviceType type = DeviceType.Real;
@@ -16,8 +26,11 @@ namespace MacrorifyServiceInstaller
             {
                 type = ConnectDevices();
             }
-            catch
+            catch (Exception ex)
             {
+                if (isDebug)
+                    Console.WriteLine(ex);
+
                 Pause();
                 return;
             }
@@ -62,8 +75,11 @@ namespace MacrorifyServiceInstaller
                     Console.WriteLine(GetDeviceDisplayName(device) + " - Installing");
                     Install(device, type);
                 } 
-                catch
+                catch (Exception ex)
                 {
+                    if (isDebug)
+                        Console.WriteLine(ex);
+
                     Console.WriteLine(GetDeviceDisplayName(device) + " - Error");
                 };
             }
@@ -110,8 +126,11 @@ namespace MacrorifyServiceInstaller
             {
                 connector.Connect();
             }
-            catch
+            catch (Exception ex)
             {
+                if (isDebug)
+                    Console.WriteLine(ex);
+
                 Console.WriteLine($"Error when trying to connect to {selected}");
                 throw new Exception();
             }

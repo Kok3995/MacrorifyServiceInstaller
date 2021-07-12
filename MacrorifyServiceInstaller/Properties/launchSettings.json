@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MacrorifyServiceInstaller": {
+      "commandName": "Project",
+      "commandLineArgs": "debug=1"
+    }
+  }
+}
