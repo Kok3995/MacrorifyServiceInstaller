@@ -13,6 +13,9 @@
     <None Remove="adb\ldplayer\adb.exe" />
     <None Remove="adb\ldplayer\AdbWinApi.dll" />
     <None Remove="adb\ldplayer\AdbWinUsbApi.dll" />
+    <None Remove="adb\memu\adb.exe" />
+    <None Remove="adb\memu\AdbWinApi.dll" />
+    <None Remove="adb\memu\AdbWinUsbApi.dll" />
     <None Remove="adb\nox\adb.exe" />
     <None Remove="adb\nox\AdbWinApi.dll" />
     <None Remove="adb\nox\AdbWinUsbApi.dll" />
