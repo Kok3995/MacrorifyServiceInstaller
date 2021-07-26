@@ -13,7 +13,7 @@ namespace MacrorifyServiceInstaller
 
         public void Connect()
         {
-            for (var i = 0; i < 10; i += 1)
+            for (var i = 0; i < 5; i += 1)
             {
                 try
                 {
