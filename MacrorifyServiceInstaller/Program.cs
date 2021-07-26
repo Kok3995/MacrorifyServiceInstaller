@@ -18,7 +18,7 @@ namespace MacrorifyServiceInstaller
 
             isDebug = debugOption == "1";
 
-            Helper.CenterText("Macrorify Native Service Installer");
+            Helper.CenterText("Macrorify Native Service Installer v1.1.1");
 
             DeviceType type = DeviceType.Real;
 
